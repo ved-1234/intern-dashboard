@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import type { User } from "@/types";
-import { authService } from "@/services/dataService";
 
 interface AuthState {
   user: User | null;
@@ -23,51 +22,107 @@ export const useAuthStore = create<AuthState>((set) => ({
   isLoading: false,
   error: null,
 
+  // ✅ LOGIN
   login: async (email, password) => {
     set({ isLoading: true, error: null });
+
     try {
-      const { accessToken, user } = await authService.login({ email, password });
-      localStorage.setItem("access_token", accessToken);
-      localStorage.setItem("user", JSON.stringify(user));
-      set({ user, token: accessToken, isAuthenticated: true, isLoading: false });
-    } catch (e: any) {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      localStorage.setItem("access_token", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      set({
+        user: data.user,
+        token: data.accessToken,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
+    } catch (error: any) {
       set({
         isLoading: false,
-        error: e?.response?.data?.message || "Login failed. Please try again.",
+        error: error.message || "Login failed. Please try again.",
       });
-      throw e;
+      throw error;
     }
   },
 
-  register: async (name, email, password) => {
+  // ✅ REGISTER
+  register: async (FullName, email, password) => {
     set({ isLoading: true, error: null });
+
     try {
-      const { accessToken, user } = await authService.register({ name, email, password });
-      localStorage.setItem("access_token", accessToken);
-      localStorage.setItem("user", JSON.stringify(user));
-      set({ user, token: accessToken, isAuthenticated: true, isLoading: false });
-    } catch (e: any) {
+      const res = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ FullName, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Registration failed");
+      }
+
+      localStorage.setItem("access_token", data.accessToken);
+      localStorage.setItem("user", JSON.stringify(data.user));
+
+      set({
+        user: data.user,
+        token: data.accessToken,
+        isAuthenticated: true,
+        isLoading: false,
+        error: null,
+      });
+    } catch (error: any) {
       set({
         isLoading: false,
-        error: e?.response?.data?.message || "Registration failed. Please try again.",
+        error: error.message || "Registration failed. Please try again.",
       });
-      throw e;
+      throw error;
     }
   },
 
+  // ✅ LOGOUT
   logout: () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
     set({ user: null, token: null, isAuthenticated: false });
   },
 
-  loadUser: () => {
-    const stored = localStorage.getItem("user");
-    const token = localStorage.getItem("access_token");
-    if (stored && token) {
-      set({ user: JSON.parse(stored), token, isAuthenticated: true });
-    }
-  },
+  // ✅ LOAD USER (on refresh)
+ loadUser: () => {
+  const stored = localStorage.getItem("user");
+  const token = localStorage.getItem("access_token");
+
+  if (!stored || stored === "undefined" || !token) {
+    return;
+  }
+
+  try {
+    const parsedUser = JSON.parse(stored);
+
+    set({
+      user: parsedUser,
+      token,
+      isAuthenticated: true,
+    });
+  } catch (error) {
+    console.error("Invalid user in localStorage. Clearing...");
+    localStorage.removeItem("user");
+  }
+},
 
   clearError: () => set({ error: null }),
 
