@@ -1,73 +1,122 @@
-# Welcome to your Lovable project
+# 🚀 Intern Dashboard
 
-## Project info
+A full-stack Intern Dashboard application built with:
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+- ⚛️ Frontend: React (Vite)
+- 🟢 Backend: Node.js + Express
+- 🗄 Database: MongoDB
+- 🔐 Authentication: JWT-based authentication
+- ☁️ Deployment: Render
 
-## How can I edit this code?
+---
 
-There are several ways of editing your application.
+## 🌐 Live Demo
 
-**Use Lovable**
+Frontend + Backend (Deployed):
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+👉 https://intern-dashboard-nlrr.onrender.com
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## 📌 Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### 🔐 Authentication
+- User Registration
+- User Login
+- JWT Token-based authentication
+- Protected Routes
+- Logout functionality
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+### 📊 Dashboard
+After login, users can:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+- View all tasks
+- Create a new task
+- Update task details
+- Delete tasks
+- Filter tasks (pending/completed)
+- Search tasks
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+---
 
-# Step 3: Install the necessary dependencies.
-npm i
+## 🏗 Tech Stack
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
+### Frontend
 - React
-- shadcn-ui
-- Tailwind CSS
+- Zustand (State Management)
+- React Router
+- TailwindCSS
+- React Hook Form + Zod
 
-## How can I deploy this project?
+### Backend
+- Node.js
+- Express.js
+- MongoDB (Mongoose)
+- JWT (jsonwebtoken)
+- bcryptjs (password hashing)
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+## 📡 API Endpoints
 
-Yes, you can!
+### 🔐 Auth Routes
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+| Method | Endpoint | Description |
+|--------|----------|------------|
+| POST | /api/auth/register | Register user |
+| POST | /api/auth/login | Login user |
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+---
+
+### 📋 Task Routes
+
+| Method | Endpoint | Description |
+|--------|----------|------------|
+| GET | /api/tasks | Get all tasks |
+| POST | /api/tasks | Create task |
+| PUT | /api/tasks/:id | Update task |
+| DELETE | /api/tasks/:id | Delete task |
+
+---
+
+## 🧪 Postman Collection
+
+You can test APIs using:
+
+- Import endpoints manually
+- Or create a collection with above routes
+- Use Bearer Token (JWT) for protected routes
+
+Authorization Header:
+
+---
+
+## ⚙️ Local Setup
+
+### 1️⃣ Clone Repo
+
+```bash
+git clone <your-repo-link>
+cd intern-dashboard
+
+2️⃣ Backend Setup
+cd backend
+npm install
+npm start
+
+Create .env file:
+
+PORT=5000
+MONGO_URI=your_mongodb_uri
+JWT_SECRET=your_secret_key
+
+3️⃣ Frontend Setup
+cd ..
+npm install
+npm run dev
+
+Create .env file:
+
+VITE_API_URL=http://localhost:5000
